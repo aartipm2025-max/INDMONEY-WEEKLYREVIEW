@@ -11,6 +11,7 @@ This architecture integrates **actual Google Play reviews**, **high-performance 
     - **Fee Explainer**: `llama-3.1-8b-instant` (Fast, structured facts)
 - **Orchestration**: Python (Pandas) + Modular Stage folders.
 - **Frontend**: Streamlit (Premium Centered Dashboard).
+- **MCP Protocol**: `FastMCP` (via `mcp_server.py`).
 - **Scheduler**: Local Cron / GitHub Actions.
 
 ---
@@ -52,6 +53,15 @@ This architecture integrates **actual Google Play reviews**, **high-performance 
 - **Recipient**: `codeflex16@gmail.com`.
 - **Logs**: Dedicated `outputs/scheduler_logs.csv` to track execution history and success rates.
 
+### Stage 6: Formal MCP Server (Standardized Tools)
+- **Framework**: `FastMCP`.
+- **Entry Point**: `mcp_server.py`.
+- **Exposed Tools**:
+    - `log_to_master_notes`: Standardized tool for updating the knowledge base.
+    - `create_report_email`: Standardized tool for drafting stakeholder communications.
+    - `check_workflow_status`: Diagnostics tool for environment health.
+- **Integration**: Allows any MCP-compatible client (e.g., Claude Desktop) to trigger INDmoney report actions via JSON-RPC.
+
 ---
 
 ## 3. Data Flow Diagram
@@ -68,6 +78,10 @@ graph TD
     F -- "Approve" --> G[Append to Knowledge Base]
     F -- "Approve" --> H[Draft Support Email]
     F -- "Export" --> I[Stakeholder PDF]
+    
+    L[AI Agents] -- "JSON-RPC" --> M[MCP Server]
+    M -- "Triggers" --> G
+    M -- "Triggers" --> H
     
     J[Weekly Scheduler] -- "Triggers" --> A
 ```

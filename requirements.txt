@@ -6,3 +6,4 @@ fpdf
 google-play-scraper
 markdown
 altair>=5.0.0
+mcp
