@@ -1,0 +1,24 @@
+# Environment & Secrets — NEVER commit these
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Data & outputs (large files)
+outputs/
+email_drafts/
+stage_02_processing/reviews_cleaned.csv
+stage_01_data/reviews_raw.csv
+
+# VS Code / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

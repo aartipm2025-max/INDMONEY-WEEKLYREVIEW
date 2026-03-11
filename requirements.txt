@@ -1,0 +1,7 @@
+groq
+pandas
+python-dotenv
+streamlit
+fpdf
+google-play-scraper
+markdown

@@ -1,0 +1,38 @@
+name: Weekly Product Pulse Scheduler
+
+on:
+  schedule:
+    # Runs at 3:35 PM IST (10:05 AM UTC) every Friday
+    - cron: '5 10 * * 5'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  run-pulse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run AI Pulse Workflow
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NOTES_FILE_PATH: "outputs/MASTER_NOTES.md"
+          EMAIL_DRAFTS_PATH: "outputs/email_drafts"
+        run: python stage_05_automation/scheduler.py
+
+      - name: Commit Updated Notes
+        run: |
+          git config --global user.name "INDmoney Pulse Bot"
+          git config --global user.email "bot@indmoney.com"
+          git add outputs/
+          git commit -m "Automated Weekly Pulse - $(date +'%Y-%m-%d')"
+          git push
