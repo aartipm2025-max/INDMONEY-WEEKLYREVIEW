@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 import stage_01_data.scraper as scraper
 import stage_02_processing.preprocessor as preprocessor
 from stage_03_ai_engine.groq_engine import GroqEngine
-from stage_03_ai_engine.gemini_engine import GeminiEngine
 from stage_04_ui_actions.actions import WorkflowActions
 
 def run_automated_workflow():
@@ -20,33 +19,32 @@ def run_automated_workflow():
     print(f"\n[{start_time}] Starting Automated Weekly Pulse...")
     
     try:
-        # 1. Scrape actual data (last 8 weeks focus mentioned in Prompt 20)
-        # We scrape latest 1000 and the cleaner sorts it by date range.
+        # 1. Scrape actual data 
         scraper.scrape_indmoney_reviews(count=1000)
         
         # 2. Clean and Filter
         preprocessor.clean_and_filter()
         
-        # 3. AI Analysis (Dual)
+        # 3. AI Analysis (Consolidated)
         df_cleaned = pd.read_csv("stage_02_processing/reviews_cleaned.csv")
-        # Filter for last 8 weeks (as per prompt 20)
+        # Filter for last 8 weeks
         df_cleaned['Date'] = pd.to_datetime(df_cleaned['Date'])
         cutoff_date = datetime.now() - timedelta(weeks=8)
         df_final = df_cleaned[df_cleaned['Date'] >= cutoff_date]
         
-        groq = GroqEngine()
-        gemini = GeminiEngine()
+        # Initialize the AI engine (using the consolidated Groq/Llama structure)
+        ai_engine = GroqEngine()
         
-        pulse = groq.analyze_reviews(df_final)
-        fee = gemini.generate_fee_explainer("Exit Load")
+        pulse = ai_engine.analyze_reviews(df_final)
+        fee = ai_engine.generate_fee_explainer("Exit Load")
         
         # 4. Final Actions (Auto-append and Email Draft)
         actions = WorkflowActions()
         actions.append_to_notes(pulse, fee)
-        draft_path = actions.create_email_draft(pulse, fee)
+        # Note: recipient can be customized per call
+        recipient = os.getenv("EMAIL_RECIPIENT", "codeflex16@gmail.com")
+        draft_path = actions.create_email_draft(pulse, fee, recipient=recipient)
         
-        # Recipient Logic (Prompt 19)
-        recipient = "codeflex16@gmail.com"
         print(f"Workflow Complete. Draft saved for {recipient}.")
         
         status = "SUCCESS"
@@ -55,6 +53,8 @@ def run_automated_workflow():
         status = "FAILED"
         error_msg = str(e)
         print(f"Error in Scheduler: {error_msg}")
+        # Initialize df_final to 0 for log consistency if it fails early
+        df_final = []
 
     # Log execution
     log_data = [{
