@@ -161,16 +161,20 @@ def main():
         # --- MAIN INTERFACE STAGES (VERTICAL STACK) ---
         st.divider()
         st.subheader("STAGE 1")
-        if st.button("🔍 Scrape Actual reviews"):
-            with st.spinner("Scraping Play Store..."):
-                scraper.scrape_indmoney_reviews(count=1000)
-                st.success("Scraped 1000 reviews")
+        _, s1_col, _ = st.columns([1, 2, 1])
+        with s1_col:
+            if st.button("🔍 Scrape Actual Reviews", use_container_width=True):
+                with st.spinner("Scraping Play Store..."):
+                    scraper.scrape_indmoney_reviews(count=1000)
+                    st.success("Scraped 1000 reviews")
 
         st.divider()
         st.subheader("STAGE 2")
-        if st.button("🧼 Clean Dataset"):
-            preprocessor.clean_and_filter()
-            st.success("Cleaned dataset saved")
+        _, s2_col, _ = st.columns([1, 2, 1])
+        with s2_col:
+            if st.button("🧼 Clean Dataset", use_container_width=True):
+                preprocessor.clean_and_filter()
+                st.success("Cleaned dataset saved")
 
         st.divider()
         st.subheader("STAGE 3")
@@ -178,15 +182,17 @@ def main():
         if os.path.exists(cleaned_path):
             df = pd.read_csv(cleaned_path)
             st.info(f"Loaded {len(df)} filtered English reviews (> 5 words).")
-            
-            if st.button("Run AI Analysis (Groq Only)"):
-                with st.spinner("Analyzing high-quality feedback with Groq (Llama 3.3 & 3.1)..."):
-                    pulse_results = groq_engine.analyze_reviews(df)
-                    fee_results = groq_engine.generate_fee_explainer()
-                    
-                    st.session_state['pulse'] = pulse_results
-                    st.session_state['fee'] = fee_results
-                    st.session_state['ready'] = True
+
+            _, s3_col, _ = st.columns([1, 2, 1])
+            with s3_col:
+                if st.button("Run AI Analysis (Groq Only)", use_container_width=True):
+                    with st.spinner("Analyzing high-quality feedback with Groq..."):
+                        pulse_results = groq_engine.analyze_reviews(df)
+                        fee_results = groq_engine.generate_fee_explainer()
+                        
+                        st.session_state['pulse'] = pulse_results
+                        st.session_state['fee'] = fee_results
+                        st.session_state['ready'] = True
 
             if st.session_state.get('ready'):
                 pulse = st.session_state['pulse']
