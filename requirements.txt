@@ -1,7 +1,8 @@
+streamlit>=1.32.0
 groq
 pandas
 python-dotenv
-streamlit
 fpdf
 google-play-scraper
 markdown
+altair>=5.0.0
