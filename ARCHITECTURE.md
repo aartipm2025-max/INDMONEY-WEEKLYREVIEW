@@ -1,12 +1,12 @@
-# AI Workflow Architecture: Weekly Product Pulse (Simplified Groq Only)
+# AI Workflow Architecture: Weekly Product Pulse
 
-This architecture integrates **actual Google Play reviews**, **Groq-only LLM logic**, and a **weekly automated scheduler**.
+This architecture integrates **actual Google Play reviews**, **high-performance LLM logic**, and a **weekly automated scheduler**.
 
 ---
 
 ## 1. Simplified Core Stack
 - **Data Gathering**: `google-play-scraper` (Scraping `in.indwealth` latest 1000 reviews).
-- **AI Engine**: **Groq** 
+- **AI Engine**: **Llama 3.1 LLM** 
     - **Pulse**: `llama-3.1-8b-instant` (Optimized for speed/stability in free tier)
     - **Fee Explainer**: `llama-3.1-8b-instant` (Fast, structured facts)
 - **Orchestration**: Python (Pandas) + Modular Stage folders.
@@ -29,7 +29,7 @@ This architecture integrates **actual Google Play reviews**, **Groq-only LLM log
     - **Language-Filter**: Remove non-English reviews using ASCII-detection.
 - **PII Scrubbing**: Regex-based replacement of emails, phone numbers, and unique IDs.
 
-### Stage 3: AI Intelligence (Groq Only)
+### Stage 3: AI Intelligence
 - **Part A (Pulse)**:
     - Task: Synthesize 5 themes, identify Top 3, and extract 3 detailed representative quotes from reviews.
     - Model: `llama-3.1-8b-instant` (Batch size: 40 critical reviews).
@@ -61,7 +61,7 @@ graph TD
     A[Google Play Store] -- "Scraper" --> B[reviews_raw.csv]
     B -- "Cleaning Pipeline" --> C[reviews_cleaned.csv]
     
-    C -- "Pulse & Fee Methods" --> D[Groq AI Engine]
+    C -- "Pulse & Fee Methods" --> D[AI Engine]
     
     D -- "Synthesis" --> F{UI Approval}
     

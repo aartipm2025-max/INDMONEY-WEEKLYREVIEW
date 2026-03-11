@@ -1,6 +1,6 @@
-# AI Product Pulse & Fee Explainer
+# AI Workflow Architecture: Weekly Product Pulse
 
-This prototype automates the analysis of user reviews to generate internal product updates and standardized fee explanations for **INDmoney**, using the **Groq** LLM and **Model Context Protocol (MCP)** patterns.
+This prototype automates the analysis of user reviews to generate internal product updates and standardized fee explanations for **INDmoney**, using the **AI Engine** and **Model Context Protocol (MCP)** patterns.
 
 ## 🚀 Features
 - **PII Scrubbing:** Automatically removes names, emails, and phone numbers from reviews before processing.
@@ -10,7 +10,7 @@ This prototype automates the analysis of user reviews to generate internal produ
   - Append reports to a Master Notes document.
   - Create email drafts for the support/product teams.
 
-## 🛠️ Setup Instructions
+### Stage 3: AI Intelligence
 
 1. **Install Dependencies:**
    ```bash
@@ -19,7 +19,7 @@ This prototype automates the analysis of user reviews to generate internal produ
 
 2. **Configure Environment:**
    - Rename `.env.example` to `.env`.
-   - Add your [Groq API Key](https://console.groq.com/keys).
+   - Add your [AI API Key](https://console.groq.com/keys).
 
 3. **Generate Sample Data:**
    ```bash
