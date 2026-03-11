@@ -145,14 +145,14 @@ def main():
 
     with center_col:
         st.title("INDmoney AI Product Pulse Dashboard")
-        st.markdown("<div class='centered-text'>Modular workflow using <b>Groq</b> for both Pulse and Fee explanations.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='centered-text'>AI-powered weekly review analysis for INDmoney product teams.</div>", unsafe_allow_html=True)
 
         # Get Keys from Environment
         groq_key = os.getenv("GROQ_API_KEY")
 
         # Initialize Engine & Actions
         if not groq_key:
-            st.error("GROQ_API_KEY missing! Please ensure it is set in your .env file.")
+            st.error("AI API key missing! Please configure secrets in settings.")
             return
 
         groq_engine = GroqEngine()
@@ -185,8 +185,8 @@ def main():
 
             _, s3_col, _ = st.columns([1, 2, 1])
             with s3_col:
-                if st.button("Run AI Analysis (Groq Only)", use_container_width=True):
-                    with st.spinner("Analyzing high-quality feedback with Groq..."):
+                if st.button("Run AI Analysis", use_container_width=True):
+                    with st.spinner("Analyzing high-quality feedback..."):
                         pulse_results = groq_engine.analyze_reviews(df)
                         fee_results = groq_engine.generate_fee_explainer()
                         
@@ -226,7 +226,7 @@ def main():
 
                 # Fee Explainer - Followed below
                 st.markdown("<div class='report-card'>", unsafe_allow_html=True)
-                st.subheader("💸 Fee Explainer (Groq)")
+                st.subheader("💸 Fee Explainer")
                 fee_html = "<ul style='text-align: left !important;'>"
                 for b in fee['explanation']:
                     fee_html += f"<li style='text-align: left !important;'>{b}</li>"
@@ -243,7 +243,7 @@ def main():
                 st.subheader("STAGE 4")
                 
                 # Recipient Input for flexibility
-                recipient = st.text_input("📬 Recipient Email", value=os.getenv("EMAIL_RECIPIENT", "team@indmoney.com"))
+                recipient = st.text_input("📬 Recipient Email", value="", placeholder="Enter recipient email address...")
                 
                 c1, c2, c3 = st.columns(3)
 
