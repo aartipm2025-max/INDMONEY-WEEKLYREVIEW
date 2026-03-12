@@ -128,10 +128,12 @@ st.markdown("""
     [data-testid='stSidebar'] {display: none;}
     
     /* Quote Styling */
+    blockquote, blockquote p, blockquote em {
+        color: #ffffff !important;
+    }
     blockquote {
-        border-left: 2px solid #64ffda;
+        border-left: 3px solid #64ffda;
         padding: 15px 25px;
-        color: #8892b0;
         font-style: italic;
         background: rgba(10, 25, 47, 0.5);
         margin: 20px 0;
